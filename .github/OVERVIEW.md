@@ -41,28 +41,51 @@ CI/CD, testing, publishing, and automation within the NautilusTrader repository.
 ### Allowed network endpoints
 
 The `step-security/harden-runner` action restricts network access to approved endpoints.
-Common endpoints are maintained in the variable `COMMON_ALLOWED_ENDPOINTS`:
+Common endpoints are maintained in the variable `COMMON_ALLOWED_ENDPOINTS`.
+
+Note: values must be newline-delimited entries in the form host:port with no comments. The list below is copy/paste ready for `COMMON_ALLOWED_ENDPOINTS`.
 
 ```
-api.github.com:443                           # GitHub API
-github.com:443                               # GitHub main site
-artifacts.githubusercontent.com:443          # GitHub Actions artifacts
-codeload.github.com:443                      # GitHub code downloads
-raw.githubusercontent.com:443                # Raw file access
-uploads.github.com:443                       # GitHub uploads
-objects.githubusercontent.com:443            # GitHub objects storage
-pipelines.actions.githubusercontent.com:443  # Actions pipelines
-tokens.actions.githubusercontent.com:443     # Actions tokens
-github-cloud.githubusercontent.com:443       # GitHub cloud content
-github-cloud.s3.amazonaws.com:443            # GitHub S3 storage
-media.githubusercontent.com:443              # GitHub media content
-archive.ubuntu.com:443                       # Ubuntu package archives
-security.ubuntu.com:443                      # Ubuntu security updates
-azure.archive.ubuntu.com:443                 # Azure Ubuntu mirrors
-astral.sh:443                                # UV/Ruff tooling
+api.github.com:443
+github.com:443
+codeload.github.com:443
+raw.githubusercontent.com:443
+uploads.github.com:443
+objects.githubusercontent.com:443
+pipelines.actions.githubusercontent.com:443
+tokens.actions.githubusercontent.com:443
+github-releases.githubusercontent.com:443
+artifactcache.actions.githubusercontent.com:443
+artifacts.githubusercontent.com:443
+github-cloud.githubusercontent.com:443
+github-cloud.s3.amazonaws.com:443
+media.githubusercontent.com:443
+archive.ubuntu.com:80
+security.ubuntu.com:80
+azure.archive.ubuntu.com:80
+ports.ubuntu.com:80
+sh.rustup.rs:443
+static.rust-lang.org:443
+crates.io:443
+static.crates.io:443
+index.crates.io:443
+pypi.org:443
+files.pythonhosted.org:443
+upload.pypi.org:443
+ghcr.io:443
+formulae.brew.sh:443
+community.chocolatey.org:443
+chocolatey.org:443
+packages.chocolatey.org:443
+astral.sh:443
 ```
 
-Job-specific endpoints (e.g., `pypi.org:443` for publishing jobs) are added inline within each workflow.
+Job-specific endpoints (e.g., Docker Hub, Debian mirrors inside docker builds, Cloudflare R2 host for publishing) are added inline within each workflow as needed.
+
+Formatting tips for `COMMON_ALLOWED_ENDPOINTS`:
+
+- Use one host:port per line; no commas or inline comments.
+- Prefer LF line endings to avoid carriage returns (CRLF) being interpreted as part of the hostname.
 
 **Action Update Policy**: When updating GitHub Actions, only use versions that have been released for at least 2 weeks.
 This allows time for the community to identify potential issues while maintaining security through timely updates.
